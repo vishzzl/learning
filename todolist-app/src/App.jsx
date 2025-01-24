@@ -1,33 +1,43 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
+import Todolist from './Todolist'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [CompletedTodos, setCompletedTodos] = useState([
+    { Text: "Turn off the geyser", isCompleted: true },
+    { Text: "Check the lights", isCompleted: true },
+    { Text: "Submit the assignment", isCompleted: true },
+  ]);
+
+  const [InCompletedTodos, setInCompletedTodos] = useState([
+    { Text: "Turn on the geyser", isCompleted: false },
+    { Text: "Check the TV", isCompleted: false },
+    { Text: "Complete the homework", isCompleted: false },
+  ]);
+
+
+function Completed(Text){
+setInCompletedTodos(InCompletedTodos.filter(t=>t.Text !== Text));
+setCompletedTodos([...CompletedTodos,{...InCompletedTodos.find(t=>t.Text === Text),isCompleted:true}])
+}
+function Deleted(Text){
+  setCompletedTodos(CompletedTodos.filter(t=>t.Text !== Text));
+}
+function created(Text){
+  console.log(Text)
+  
+  setInCompletedTodos([...InCompletedTodos,{Text,isCompleted:false}]);
+}
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+     <Todolist 
+     OnCreatedClicked={created}
+     onCompleteClicked={Completed}
+     onDeletedClicked={Deleted}
+     CompletedTodos={CompletedTodos} 
+     IncompleteTodos={InCompletedTodos} />
     </>
   )
 }

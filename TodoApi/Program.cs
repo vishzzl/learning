@@ -9,6 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<TodosContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<ITodoItemService, todoItemService>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigins", builder =>
+    {
+        builder.WithOrigins("https://automatic-space-fortnight-7wvr6pgj9x7cx4r6-5173.app.github.dev")  // Specify the allowed origin
+               .AllowAnyMethod()  // Allow any method (GET, POST, PUT, DELETE, etc.)
+               .AllowAnyHeader()  // Allow any headers
+               .AllowCredentials();  // Allow credentials (cookies, HTTP auth, etc.)
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -26,6 +37,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.MapControllers();
 
+
+// ...
+
+app.UseCors("AllowSpecificOrigins"); // Apply the custom CORS policy
 app.Run();
 // var summaries = new[]
 // {

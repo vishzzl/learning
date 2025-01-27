@@ -12,11 +12,11 @@ export default function Todolist({OnCreatedClicked,onCompleteClicked,onDeletedCl
     <FormoTodo />
     <h2>Completed Tasks:</h2>
     {todos.filter(x=>x.isCompleted === true).map((todo,index)=>(
-        <TodolistItem todo={todo} />
+        <TodolistItem todo={todo} key={index} />
     ))}
     <h2>Incomplete Tasks:</h2>
     {todos.filter(x=>x.isCompleted === false).map((todos,index)=>(
-        <TodolistItem todo={todos} OnCompleted={onCompleteClicked}/>
+        <TodolistItem todo={todos} key={index} OnCompleted={onCompleteClicked}/>
     ))}
     </>
     
